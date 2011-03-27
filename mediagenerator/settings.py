@@ -5,11 +5,19 @@ DEV_MEDIA_URL = getattr(settings, 'DEV_MEDIA_URL',
                         getattr(settings, 'STATIC_URL', settings.MEDIA_URL))
 PRODUCTION_MEDIA_URL = getattr(settings, 'PRODUCTION_MEDIA_URL', DEV_MEDIA_URL)
 
-MEDIA_GENERATORS = getattr(settings, 'MEDIA_GENERATORS', (
+DEFAULT_MEDIA_GENERATORS = (
     'mediagenerator.generators.copyfiles.CopyFiles',
     'mediagenerator.generators.bundles.Bundles',
     'mediagenerator.generators.manifest.Manifest',
-))
+)
+try:
+    # Only include sprites if PIL is installed
+    import Image
+    DEFAULT_MEDIA_GENERATORS += ('mediagenerator.generators.sprites.Sprites',)
+except ImportError:
+    pass
+
+MEDIA_GENERATORS = getattr(settings, 'MEDIA_GENERATORS', DEFAULT_MEDIA_GENERATORS)
 
 GENERATED_MEDIA_DIR = os.path.abspath(
     getattr(settings, 'GENERATED_MEDIA_DIR', '_generated_media'))
