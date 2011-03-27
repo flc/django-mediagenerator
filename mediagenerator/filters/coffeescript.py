@@ -50,7 +50,7 @@ class CoffeeScript(Filter):
     def _compile(self, input, debug=False):
         try:
             shell = sys.platform == 'win32'
-            cmd = Popen(['coffee', '-c', '-p', '-s', '--no-wrap'],
+            cmd = Popen(['coffee', '-c', '-p', '-s', '--bare'],
                         stdin=PIPE, stdout=PIPE, stderr=PIPE,
                         shell=shell, universal_newlines=True)
             output, error = cmd.communicate(input)
