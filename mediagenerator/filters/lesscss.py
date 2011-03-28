@@ -2,7 +2,7 @@ from hashlib import sha1
 from mediagenerator.generators.bundles.base import Filter
 from mediagenerator.utils import find_file
 from subprocess import Popen, PIPE
-import os
+import os, sys
 
 class LessCSS(Filter):    
     """
@@ -52,9 +52,9 @@ class LessCSS(Filter):
 
     def _compile(self, path, debug=False):
         try:
-            cmd = Popen(['lessc %s' % path], stdin=PIPE, stdout=PIPE, stderr=PIPE,
-                        shell=True, universal_newlines=True)
-            output, error = cmd.communicate(path)
+            cmd = Popen(['lessc', path], stdin=PIPE, stdout=PIPE, stderr=PIPE,
+                        shell=sys.platform == 'win32', universal_newlines=True)
+            output, error = cmd.communicate("")
             assert cmd.wait() == 0, ('LessCSS command returned bad '
                                      'result:\n%s' % error)
             return output
@@ -62,5 +62,6 @@ class LessCSS(Filter):
             raise ValueError("Failed to run LessCSS compiler for this "
                 "file. Please confirm that the \"lessc\" application is "
                 "on your path and that you can run it from your own command "
-                "line.\n"
-                "Error was: %s" % e)
+                "line.\n"\
+                "File: %s\n"\
+                "Error was: %s" % (path, e)
