@@ -47,6 +47,7 @@ class Sprites(Generator):
                 selector = os.path.splitext(j[1])[0].replace(os.path.sep, '_')
                 css += "\n.%s.%s { background-position: %dpx %dpx; }" % (sprite_name, selector, -x,-y)
                 css += "\n.%s.%s.sized { width: %dpx; height: %dpx; }" % (sprite_name, selector, w,h)
+                css += "\n.%s.%s.replace { overflow: hidden; text-indent: -9999px; width: %dpx; height: %dpx;}" % (sprite_name, selector, w,h)
                 x += w
             y += h
         
