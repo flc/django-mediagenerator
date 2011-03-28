@@ -64,4 +64,4 @@ class LessCSS(Filter):
                 "on your path and that you can run it from your own command "
                 "line.\n"\
                 "File: %s\n"\
-                "Error was: %s" % (path, e)
+                "Error was: %s" % (path, e))
