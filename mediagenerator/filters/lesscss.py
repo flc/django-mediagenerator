@@ -53,8 +53,8 @@ class LessCSS(Filter):
     def _compile(self, path, debug=False):
         try:
             filepath, filename = os.path.split(path)
-            cmd = Popen(['cd', filepath, '&&', 'less', filename], stdin=PIPE, stdout=PIPE, stderr=PIPE,
-                        shell=sys.platform == 'win32', universal_newlines=True)
+            cmd = Popen(['lessc', filename], stdin=PIPE, stdout=PIPE, stderr=PIPE,
+                        shell=sys.platform == 'win32', universal_newlines=True, cwd=filepath)
             output, error = cmd.communicate("")
             assert cmd.wait() == 0, ('LessCSS command returned bad '
                                      'result:\n%s' % error)
