@@ -43,3 +43,8 @@ def media_url(url):
 @register.filter
 def media_urls(url):
     return utils.media_urls(url)
+
+@register.simple_tag
+def media_sprite(name):
+    return "<link rel='stylesheet' href='%s' />" % (media_url(name + '.sprite.css'),) + \
+        "\n<style>.%s { background-image:url('%s'); }</style>" % (name, media_url(name + '.sprite.png'))
