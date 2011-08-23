@@ -17,6 +17,7 @@ FRAMEWORKS_DIR = getattr(settings, 'IMPORTED_SASS_FRAMEWORKS_DIR',
 FRAMEWORKS_DIR = os.path.normcase(os.path.abspath(FRAMEWORKS_DIR))
 
 PATHS_SCRIPT = os.path.join(os.path.dirname(sass.__file__), 'sass_paths.rb')
+RUBY_BIN = getattr(settings, 'RUBY_BIN', 'ruby')
 
 def copy_children(src, dst):
     for item in os.listdir(src):
@@ -57,7 +58,7 @@ class Command(NoArgsCommand):
                              ")\n" % {'dir': os.path.basename(FRAMEWORKS_DIR)})
 
     def get_framework_paths(self):
-        run = ['ruby', PATHS_SCRIPT]
+        run = [RUBY_BIN, PATHS_SCRIPT]
         run.extend(sass.SASS_FRAMEWORKS)
         try:
             cmd = Popen(run, universal_newlines=True,

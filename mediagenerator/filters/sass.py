@@ -21,6 +21,9 @@ multi_line_comment_re = re.compile(r'/\*.*?\*/', _RE_FLAGS | re.DOTALL)
 one_line_comment_re = re.compile(r'//.*', _RE_FLAGS)
 import_re = re.compile(r'^@import\s+["\']?(.+?)["\']?\s*;?\s*$', _RE_FLAGS)
 
+SASS_BIN = getattr(settings, 'SASS_BIN', 'sass')
+SASS_OUTPUT_STYLE = getattr(settings, 'SASS_OUTPUT_STYLE', 'expanded')
+
 class Sass(Filter):
     takes_input = False
 
@@ -64,7 +67,7 @@ class Sass(Filter):
     def _compile(self, debug=False):
         extensions = os.path.join(os.path.dirname(__file__), 'sass_compass.rb')
         extensions = extensions.replace('\\', '/')
-        run = ['sass', '-C', '-t', 'expanded',
+        run = [SASS_BIN, '-C', '-t', SASS_OUTPUT_STYLE,
                '--require', extensions]
         for framework in SASS_FRAMEWORKS:
             # Some frameworks are loaded by default
