@@ -28,7 +28,7 @@ DEFAULT_MEDIA_GENERATORS = (
 )
 try:
     # Only include sprites if PIL is installed
-    import Image
+    from PIL import Image
     DEFAULT_MEDIA_GENERATORS += ('mediagenerator.generators.sprites.Sprites',)
 except ImportError:
     pass

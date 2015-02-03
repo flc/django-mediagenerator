@@ -2,7 +2,7 @@ from django.conf import settings
 from mediagenerator.base import Generator
 from mediagenerator import utils, settings as mg_settings
 from hashlib import sha1
-import Image
+from PIL import Image
 from StringIO import StringIO
 import os
 
