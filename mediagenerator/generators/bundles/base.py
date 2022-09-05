@@ -1,5 +1,5 @@
 from .settings import DEFAULT_MEDIA_FILTERS
-from django.utils.encoding import smart_str
+from django.utils.encoding import smart_bytes
 from hashlib import sha1
 from mediagenerator.utils import load_backend, find_file, read_text_file
 import os
@@ -154,7 +154,7 @@ class FileFilter(Filter):
         mtime = os.path.getmtime(path)
         if mtime != self.mtime:
             output = self.get_dev_output(self.name, variation)
-            hash = sha1(smart_str(output)).hexdigest()
+            hash = sha1(smart_bytes(output)).hexdigest()
         else:
             hash = self.hash
         yield self.name, hash
@@ -181,7 +181,7 @@ class RawFileFilter(FileFilter):
         mtime = os.path.getmtime(self.path)
         if mtime != self.mtime:
             output = self.get_dev_output(self.name, variation)
-            hash = sha1(smart_str(output)).hexdigest()
+            hash = sha1(smart_bytes(output)).hexdigest()
         else:
             hash = self.hash
         yield self.name, hash

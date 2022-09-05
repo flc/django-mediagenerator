@@ -1,4 +1,4 @@
-from django.utils.encoding import smart_str
+from django.utils.encoding import smart_bytes
 from hashlib import sha1
 from mediagenerator.generators.bundles.base import Filter
 from mediagenerator.utils import get_media_dirs, read_text_file
@@ -142,7 +142,7 @@ class Pyjs(Filter):
 
         if not self.exclude_main_libs:
             content = self._compile_init()
-            hash = sha1(smart_str(content)).hexdigest()
+            hash = sha1(smart_bytes(content)).hexdigest()
             yield '._pyjs.js', hash
 
         if self.only_dependencies:
@@ -155,7 +155,7 @@ class Pyjs(Filter):
 
         if self.main_module is not None or not self.exclude_main_libs:
             content = self._compile_main(dev_mode=True)
-            hash = sha1(smart_str(content)).hexdigest()
+            hash = sha1(smart_bytes(content)).hexdigest()
             yield '.main.js', hash
 
     def _regenerate(self, dev_mode=False):
@@ -190,7 +190,7 @@ class Pyjs(Filter):
             except:
                 self._compiled = {}
                 raise
-            hash = sha1(smart_str(content)).hexdigest()
+            hash = sha1(smart_bytes(content)).hexdigest()
             self._compiled[module_name] = (mtime, content, hash)
 
             for name in py_deps:

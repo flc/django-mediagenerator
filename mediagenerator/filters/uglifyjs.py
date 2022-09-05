@@ -25,7 +25,9 @@ class UglifyJS(Filter):
                             universal_newlines=True)
                 output, error = cmd.communicate(smart_str(input))
                 assert cmd.wait() == 0, 'Command returned bad result:\n%s' % error
-                yield output.decode('utf-8')
+                if hasattr(output, 'decode'):
+                    output = output.decode('utf-8')
+                yield output
             except Exception as e:
                 raise ValueError("Failed to run UglifyJS. "
                     "Please make sure you have Node.js and UglifyJS installed "

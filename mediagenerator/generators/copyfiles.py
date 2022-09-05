@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.utils.encoding import smart_bytes
 from hashlib import sha1
 from mediagenerator.base import Generator
 from mediagenerator.utils import get_media_dirs, find_file, prepare_patterns
@@ -30,7 +31,7 @@ class CopyFiles(Generator):
 
         for name, source in list(media_files.items()):
             fp = open(source, 'rb')
-            hash = sha1(fp.read()).hexdigest()
+            hash = sha1(smart_bytes(fp.read())).hexdigest()
             fp.close()
             yield name, name, hash
 

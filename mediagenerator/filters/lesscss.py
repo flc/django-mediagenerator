@@ -1,10 +1,11 @@
 from hashlib import sha1
+from django.utils.encoding import smart_bytes
 from mediagenerator.generators.bundles.base import Filter
 from mediagenerator.utils import find_file
 from subprocess import Popen, PIPE
 import os, sys
 
-class LessCSS(Filter):    
+class LessCSS(Filter):
     """
     LessCSS filter
     You need node.js and lessc on your path
@@ -47,7 +48,7 @@ class LessCSS(Filter):
             return
 
         self._compiled = self._compile(path, debug=debug)
-        self._compiled_hash = sha1(self._compiled).hexdigest()
+        self._compiled_hash = sha1(smart_bytes(self._compiled)).hexdigest()
         self._mtime = mtime
 
     def _compile(self, path, debug=False):

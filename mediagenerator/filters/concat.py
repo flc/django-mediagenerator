@@ -1,4 +1,4 @@
-from django.utils.encoding import smart_str
+from django.utils.encoding import smart_bytes
 from hashlib import sha1
 from mediagenerator.generators.bundles.base import Filter
 
@@ -28,4 +28,4 @@ class Concat(Filter):
             yield from super().get_dev_output_names(variation)
             return
         content = self.get_dev_output(self.dev_output_name, variation)
-        yield self.dev_output_name, sha1(smart_str(content)).hexdigest()
+        yield self.dev_output_name, sha1(smart_bytes(content)).hexdigest()

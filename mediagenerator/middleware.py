@@ -1,3 +1,5 @@
+from django.utils.deprecation import MiddlewareMixin
+
 from .settings import DEV_MEDIA_URL, MEDIA_DEV_MODE
 # Only load other dependencies if they're needed
 if MEDIA_DEV_MODE:
@@ -13,7 +15,7 @@ TEXT_MIME_TYPES = (
     'application/xml',
 )
 
-class MediaMiddleware:
+class MediaMiddleware(MiddlewareMixin):
     """
     Middleware for serving and browser-side caching of media files.
 

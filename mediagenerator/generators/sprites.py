@@ -1,9 +1,10 @@
 from django.conf import settings
+from django.utils.encoding import smart_bytes
 from mediagenerator.base import Generator
 from mediagenerator import utils, settings as mg_settings
 from hashlib import sha1
 from PIL import Image
-from io import StringIO
+from io import BytesIO
 import os
 
 MEDIA_SPRITES = getattr(settings, 'MEDIA_SPRITES', ())
@@ -51,12 +52,12 @@ class Sprites(Generator):
                 x += w
             y += h
 
-        buf = StringIO()
+        buf = BytesIO()
         sprite.save(buf, format="PNG")
         png = buf.getvalue()
         buf.close()
 
-        hash = sha1(png).hexdigest()
+        hash = sha1(smart_bytes(png)).hexdigest()
 
         self.cache[sprite_css_name] = css, "text/css"
         self.cache[sprite_png_name] = png, "image/png"

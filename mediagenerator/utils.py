@@ -1,10 +1,11 @@
+from importlib import import_module
+
 from . import settings as media_settings
 from .settings import (GLOBAL_MEDIA_DIRS, PRODUCTION_MEDIA_URL,
     IGNORE_APP_MEDIA_DIRS, MEDIA_GENERATORS, DEV_MEDIA_URL,
     GENERATED_MEDIA_NAMES_MODULE)
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-from django.utils.importlib import import_module
 from urllib.parse import quote
 import os
 import re
@@ -122,10 +123,9 @@ def find_file(name, media_dirs=None):
             return path
 
 def read_text_file(path):
-    fp = open(path)
-    output = fp.read()
-    fp.close()
-    return output.decode('utf8')
+    with open(path) as fp:
+        output = fp.read()
+    return output
 
 def load_backend(backend):
     if backend not in _backends_cache:
