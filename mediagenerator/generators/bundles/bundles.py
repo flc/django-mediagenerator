@@ -27,7 +27,7 @@ class Bundles(Generator):
                 combinations = product(*(variations[key]
                                          for key in sorted(variations.keys())))
                 for combination in combinations:
-                    variation_map = zip(sorted(variations.keys()), combination)
+                    variation_map = list(zip(sorted(variations.keys()), combination))
                     variation = dict(variation_map)
                     name, content = self.generate_file(backend, bundle,
                                                        variation, combination)
@@ -42,7 +42,7 @@ class Bundles(Generator):
         combination = parts[1:]
         root = _load_root_filter(bundle)
         variations = root._get_variations_with_input()
-        variation = dict(zip(sorted(variations.keys()), combination))
+        variation = dict(list(zip(sorted(variations.keys()), combination)))
         content = root.get_dev_output(path, variation)
         mimetype = guess_type(bundle)[0]
         return content, mimetype
@@ -61,14 +61,14 @@ class Bundles(Generator):
                 combinations = product(*(variations[key]
                                          for key in sorted(variations.keys())))
                 for combination in combinations:
-                    variation_map = zip(sorted(variations.keys()), combination)
+                    variation_map = list(zip(sorted(variations.keys()), combination))
                     variation = dict(variation_map)
                     for name, hash in backend.get_dev_output_names(variation):
                         url = '%s--%s|%s' % (bundle, '--'.join(combination), name)
                         yield _get_key(bundle, variation_map), url, hash
 
     def generate_file(self, backend, bundle, variation, combination=()):
-        print 'Generating %s with variation %r' % (bundle, variation)
+        print('Generating %s with variation %r' % (bundle, variation))
         output = list(backend.get_output(variation))
         if len(output) == 0:
             output = ('',)

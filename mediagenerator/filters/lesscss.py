@@ -13,9 +13,9 @@ class LessCSS(Filter):
     takes_input = False
 
     def __init__(self, **kwargs):
-        print 'less css'
+        print('less css')
         self.config(kwargs, module=None)
-        super(LessCSS, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         assert self.filetype == 'css', (
             'LessCSS only supports compilation to css. '
             'The parent filter expects "%s".' % self.filetype)
@@ -59,7 +59,7 @@ class LessCSS(Filter):
             assert cmd.wait() == 0, ('LessCSS command returned bad '
                                      'result:\n%s' % error)
             return output
-        except Exception, e:
+        except Exception as e:
             raise ValueError("Failed to run LessCSS compiler for this "
                 "file. Please confirm that the \"lessc\" application is "
                 "on your path and that you can run it from your own command "

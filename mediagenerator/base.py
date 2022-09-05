@@ -1,7 +1,7 @@
 from django.utils.encoding import smart_str
 from hashlib import sha1
 
-class Generator(object):
+class Generator:
     def generate_version(self, key, url, content):
         return sha1(smart_str(content)).hexdigest()
 

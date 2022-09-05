@@ -12,7 +12,7 @@ class MediaNode(template.Node):
     def render(self, context):
         bundle = template.Variable(self.bundle).resolve(context)
         variation = {}
-        for key, value in self.variation.items():
+        for key, value in list(self.variation.items()):
             variation[key] = template.Variable(value).resolve(context)
 
         return _render_include_media(bundle, variation)

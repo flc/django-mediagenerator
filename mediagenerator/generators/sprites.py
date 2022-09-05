@@ -3,7 +3,7 @@ from mediagenerator.base import Generator
 from mediagenerator import utils, settings as mg_settings
 from hashlib import sha1
 from PIL import Image
-from StringIO import StringIO
+from io import StringIO
 import os
 
 MEDIA_SPRITES = getattr(settings, 'MEDIA_SPRITES', ())
@@ -33,8 +33,8 @@ class Sprites(Generator):
             matrix.append((im.size[1], [(im.size[0], img, im)]))
             matrix.append((self.padding, ()))
 
-        w = max((sum((j[0] for j in i[1])) for i in matrix))
-        h = sum((i[0] for i in matrix))
+        w = max(sum(j[0] for j in i[1]) for i in matrix)
+        h = sum(i[0] for i in matrix)
 
         css = ""
         sprite = Image.new("RGBA", (w,h))

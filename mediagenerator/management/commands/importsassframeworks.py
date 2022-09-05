@@ -65,8 +65,8 @@ class Command(NoArgsCommand):
                         stdin=PIPE, stdout=PIPE, stderr=PIPE)
             output, error = cmd.communicate()
             assert cmd.wait() == 0, 'Command returned bad result:\n%s' % error
-            return map(os.path.abspath, filter(None, output.split('\n')))
-        except Exception, e:
+            return list(map(os.path.abspath, [_f for _f in output.split('\n') if _f]))
+        except Exception as e:
             raise ValueError("Failed to execute an internal Ruby script. "
                 "Please make sure that you have installed Ruby "
                 "(http://ruby-lang.org), Sass (http://sass-lang.com), and "

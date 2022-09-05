@@ -23,7 +23,7 @@ MAX_DATA_URI_FILE_SIZE = getattr(settings, 'MAX_DATA_URI_FILE_SIZE', 12 * 1024)
 IGNORE_PATTERN = prepare_patterns(getattr(settings,
    'IGNORE_DATA_URI_PATTERNS', (r'.*\.htc',)), 'IGNORE_DATA_URI_PATTERNS')
 
-class URLRewriter(object):
+class URLRewriter:
     def __init__(self, base_path='./'):
         if not base_path:
             base_path = './'
@@ -73,7 +73,7 @@ class URLRewriter(object):
 class CSSURL(Filter):
     """Rewrites URLs relative to media folder ("absolute" rewriting)."""
     def __init__(self, **kwargs):
-        super(CSSURL, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         assert self.filetype == 'css', (
             'CSSURL only supports CSS output. '
             'The parent filter expects "%s".' % self.filetype)
@@ -85,13 +85,13 @@ class CSSURL(Filter):
 
     def get_dev_output(self, name, variation):
         rewriter = URLRewriter()
-        content = super(CSSURL, self).get_dev_output(name, variation)
+        content = super().get_dev_output(name, variation)
         return rewriter.rewrite_urls(content)
 
 class CSSURLFileFilter(FileFilter):
     """Rewrites URLs relative to input file's location."""
     def get_dev_output(self, name, variation):
-        content = super(CSSURLFileFilter, self).get_dev_output(name, variation)
+        content = super().get_dev_output(name, variation)
         if not REWRITE_CSS_URLS_RELATIVE_TO_SOURCE:
             return content
         rewriter = URLRewriter(posixpath.dirname(name))

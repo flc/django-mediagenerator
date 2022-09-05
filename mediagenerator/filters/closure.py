@@ -8,7 +8,7 @@ COMPILATION_LEVEL = getattr(settings, 'CLOSURE_COMPILATION_LEVEL',
 class Closure(Filter):
     def __init__(self, **kwargs):
         self.config(kwargs, compilation_level=COMPILATION_LEVEL)
-        super(Closure, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         assert self.filetype == 'js', (
             'Closure only supports compilation to js. '
             'The parent filter expects "%s".' % self.filetype)
@@ -28,7 +28,7 @@ class Closure(Filter):
                 output, error = cmd.communicate(smart_str(input))
                 assert cmd.wait() == 0, 'Command returned bad result:\n%s' % error
                 yield output.decode('utf-8')
-            except Exception, e:
+            except Exception as e:
                 raise ValueError("Failed to execute Java VM or Closure. "
                     "Please make sure that you have installed Java "
                     "and that it's in your PATH and that you've configured "

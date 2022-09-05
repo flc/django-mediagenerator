@@ -8,9 +8,9 @@ import os
 import sys
 
 try:
-    from cStringIO import StringIO
+    from io import StringIO
 except ImportError:
-    from StringIO import StringIO
+    from io import StringIO
 
 # Register PYVA() function
 try:
@@ -80,14 +80,14 @@ class Pyjs(Filter):
     def __init__(self, **kwargs):
         self.config(kwargs, exclude_main_libs=False, main_module=None,
                     debug=None, path=(), only_dependencies=None)
-        if isinstance(self.path, basestring):
+        if isinstance(self.path, str):
             self.path = (self.path,)
         self.path += tuple(get_media_dirs())
         if self.only_dependencies is None:
             self.only_dependencies = bool(self.main_module)
         if self.only_dependencies:
             self.path += (STDLIB_PATH, BUILTIN_PATH, EXTRA_LIBS_PATH)
-        super(Pyjs, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         assert self.filetype == 'js', (
             'Pyjs only supports compilation to js. '
             'The parent filter expects "%s".' % self.filetype)
@@ -161,7 +161,7 @@ class Pyjs(Filter):
     def _regenerate(self, dev_mode=False):
         # This function is only called in only_dependencies mode
         if self._compiled:
-            for module_name, (mtime, content, hash) in self._compiled.items():
+            for module_name, (mtime, content, hash) in list(self._compiled.items()):
                 if module_name not in self._collected or \
                         not os.path.exists(self._collected[module_name]) or \
                         os.path.getmtime(self._collected[module_name]) != mtime:

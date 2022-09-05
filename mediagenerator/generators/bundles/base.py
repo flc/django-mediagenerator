@@ -4,7 +4,7 @@ from hashlib import sha1
 from mediagenerator.utils import load_backend, find_file, read_text_file
 import os
 
-class Filter(object):
+class Filter:
     takes_input = True
 
     def __init__(self, **kwargs):
@@ -23,7 +23,7 @@ class Filter(object):
             if not isinstance(self.input, (tuple, list)):
                 self.input = (self.input,)
         self._input_filters = None
-        assert not kwargs, 'Unknown parameters: %s' % ', '.join(kwargs.keys())
+        assert not kwargs, 'Unknown parameters: %s' % ', '.join(list(kwargs.keys()))
 
     @classmethod
     def from_default(cls, name):
@@ -67,8 +67,7 @@ class Filter(object):
     def get_input(self, variation):
         """Yields contents for each input item."""
         for filter in self.get_input_filters():
-            for input in filter.get_output(variation):
-                yield input
+            yield from filter.get_output(variation)
 
     def get_input_filters(self):
         """Returns a Filter instance for each input item."""
@@ -117,7 +116,7 @@ class Filter(object):
 
         for filter in self.get_input_filters():
             subvariations = filter._get_variations_with_input()
-            for k, v in subvariations.items():
+            for k, v in list(subvariations.items()):
                 if k in variations and v != variations[k]:
                     raise ValueError('Conflicting variations for "%s": %r != %r' % (
                         k, v, variations[k]))
@@ -135,7 +134,7 @@ class FileFilter(Filter):
     def __init__(self, **kwargs):
         self.config(kwargs, name=None)
         self.mtime = self.hash = None
-        super(FileFilter, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     @classmethod
     def from_default(cls, name):
@@ -170,7 +169,7 @@ class RawFileFilter(FileFilter):
 
     def __init__(self, **kwargs):
         self.config(kwargs, path=None)
-        super(RawFileFilter, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def get_dev_output(self, name, variation):
         assert name == self.name, (

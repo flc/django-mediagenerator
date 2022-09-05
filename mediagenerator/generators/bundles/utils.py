@@ -58,7 +58,7 @@ def _render_include_media(bundle, variation):
                          for key in sorted(variations.keys())]
         if variation:
             raise ValueError('Bundle %s does not support the following variation(s): %s'
-                             % (bundle, ', '.join(variation.keys())))
+                             % (bundle, ', '.join(list(variation.keys()))))
     else:
         variation_map = tuple((key, variation[key])
                               for key in sorted(variation.keys()))
@@ -67,11 +67,11 @@ def _render_include_media(bundle, variation):
 
     if filetype == 'css':
         if media_types:
-            tag = u'<link rel="stylesheet" type="text/css" href="%%s" media="%s" />' % media_types
+            tag = '<link rel="stylesheet" type="text/css" href="%%s" media="%s" />' % media_types
         else:
-            tag = u'<link rel="stylesheet" type="text/css" href="%s" />'
+            tag = '<link rel="stylesheet" type="text/css" href="%s" />'
     elif filetype == 'js':
-        tag = u'<script type="text/javascript" src="%s"></script>'
+        tag = '<script type="text/javascript" src="%s"></script>'
     else:
         raise ValueError("""Don't know how to include file type "%s".""" % filetype)
 

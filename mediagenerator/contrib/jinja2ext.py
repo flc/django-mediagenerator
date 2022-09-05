@@ -3,13 +3,13 @@ from jinja2.ext import Extension
 from mediagenerator.generators.bundles.utils import _render_include_media
 
 class MediaExtension(Extension):
-    tags = set(['include_media'])
+    tags = {'include_media'}
 
     def __init__(self, environment):
         self.environment = environment
 
     def parse(self, parser):
-        token = parser.stream.next()
+        token = next(parser.stream)
         args = [parser.parse_expression()]
         kwargs = []
         while parser.stream.current.type != 'block_end':

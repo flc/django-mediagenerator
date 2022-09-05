@@ -4,7 +4,7 @@ from mediagenerator.generators.bundles.base import Filter
 
 class UglifyJS(Filter):
     def __init__(self, **kwargs):
-        super(UglifyJS, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         assert self.filetype == 'js', (
             'UglifyJS only supports compilation to js. '
             'The parent filter expects "%s".' % self.filetype)
@@ -26,7 +26,7 @@ class UglifyJS(Filter):
                 output, error = cmd.communicate(smart_str(input))
                 assert cmd.wait() == 0, 'Command returned bad result:\n%s' % error
                 yield output.decode('utf-8')
-            except Exception, e:
+            except Exception as e:
                 raise ValueError("Failed to run UglifyJS. "
                     "Please make sure you have Node.js and UglifyJS installed "
                     "and that it's in your PATH.\n"

@@ -40,13 +40,13 @@ def _refresh_dev_names():
             _generated_names[key].append(versioned_url)
             _backend_mapping[url] = backend
 
-class _MatchNothing(object):
+class _MatchNothing:
     def match(self, content):
         return False
 
 def prepare_patterns(patterns, setting_name):
     """Helper function for patter-matching settings."""
-    if isinstance(patterns, basestring):
+    if isinstance(patterns, str):
         patterns = (patterns,)
     if not patterns:
         return _MatchNothing()
@@ -80,8 +80,8 @@ def get_media_url_mapping():
         base_url = PRODUCTION_MEDIA_URL
 
     mapping = {}
-    for key, value in get_media_mapping().items():
-        if isinstance(value, basestring):
+    for key, value in list(get_media_mapping().items()):
+        if isinstance(value, str):
             value = (value,)
         mapping[key] = [base_url + url for url in value]
 
@@ -107,7 +107,7 @@ def get_media_dirs():
         for app in settings.INSTALLED_APPS:
             if app in IGNORE_APP_MEDIA_DIRS:
                 continue
-            for name in (u'static', u'media'):
+            for name in ('static', 'media'):
                 app_root = os.path.dirname(import_module(app).__file__)
                 media_dirs.append(os.path.join(app_root, name))
         _media_dirs_cache.extend(media_dirs)
@@ -122,7 +122,7 @@ def find_file(name, media_dirs=None):
             return path
 
 def read_text_file(path):
-    fp = open(path, 'r')
+    fp = open(path)
     output = fp.read()
     fp.close()
     return output.decode('utf8')
@@ -137,7 +137,7 @@ def _load_backend(path):
     module_name, attr_name = path.rsplit('.', 1)
     try:
         mod = import_module(module_name)
-    except (ImportError, ValueError), e:
+    except (ImportError, ValueError) as e:
         raise ImproperlyConfigured('Error importing backend module %s: "%s"' % (module_name, e))
     try:
         return getattr(mod, attr_name)

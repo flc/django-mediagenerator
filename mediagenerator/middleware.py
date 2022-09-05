@@ -13,7 +13,7 @@ TEXT_MIME_TYPES = (
     'application/xml',
 )
 
-class MediaMiddleware(object):
+class MediaMiddleware:
     """
     Middleware for serving and browser-side caching of media files.
 
@@ -46,7 +46,7 @@ class MediaMiddleware(object):
         content, mimetype = backend.get_dev_output(filename)
         if not mimetype:
             mimetype = 'application/octet-stream'
-        if isinstance(content, unicode):
+        if isinstance(content, str):
             content = content.encode('utf-8')
         if mimetype.startswith('text/') or mimetype in TEXT_MIME_TYPES:
             mimetype += '; charset=utf-8'

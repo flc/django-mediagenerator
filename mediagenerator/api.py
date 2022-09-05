@@ -30,7 +30,7 @@ def generate_media():
                 os.makedirs(parent)
 
             fp = open(path, 'wb')
-            if isinstance(content, unicode):
+            if isinstance(content, str):
                 content = content.encode('utf8')
             fp.write(content)
             fp.close()

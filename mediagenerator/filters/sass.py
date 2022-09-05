@@ -13,7 +13,7 @@ import sys
 SASS_DEBUG_INFO = getattr(settings, 'SASS_DEBUG_INFO', False)
 SASS_FRAMEWORKS = getattr(settings, 'SASS_FRAMEWORKS',
                           ('compass', 'blueprint'))
-if isinstance(SASS_FRAMEWORKS, basestring):
+if isinstance(SASS_FRAMEWORKS, str):
     SASS_FRAMEWORKS = (SASS_FRAMEWORKS,)
 
 _RE_FLAGS = re.MULTILINE | re.UNICODE
@@ -29,9 +29,9 @@ class Sass(Filter):
 
     def __init__(self, **kwargs):
         self.config(kwargs, path=(), main_module=None)
-        if isinstance(self.path, basestring):
+        if isinstance(self.path, str):
             self.path = (self.path,)
-        super(Sass, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         assert self.filetype == 'css', (
             'Sass only supports compilation to css. '
             'The parent filter expects "%s".' % self.filetype)
@@ -90,7 +90,7 @@ class Sass(Filter):
             if output.startswith('@charset '):
                 output = output.split(';', 1)[1]
             return output
-        except Exception, e:
+        except Exception as e:
             raise ValueError("Failed to execute Sass. Please make sure that "
                 "you have installed Sass (http://sass-lang.com) and "
                 "Compass (http://compass-style.org).\n"
@@ -98,7 +98,7 @@ class Sass(Filter):
 
     def _regenerate(self, debug=False):
         if self._dependencies:
-            for name, mtime in self._dependencies.items():
+            for name, mtime in list(self._dependencies.items()):
                 path = self._find_file(name)
                 if not path or os.path.getmtime(path) != mtime:
                     # Just recompile everything

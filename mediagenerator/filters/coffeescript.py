@@ -11,7 +11,7 @@ class CoffeeScript(Filter):
 
     def __init__(self, **kwargs):
         self.config(kwargs, module=None)
-        super(CoffeeScript, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         assert self.filetype == 'js', (
             'CoffeeScript only supports compilation to js. '
             'The parent filter expects "%s".' % self.filetype)
@@ -56,7 +56,7 @@ class CoffeeScript(Filter):
             assert cmd.wait() == 0, ('CoffeeScript command returned bad '
                                      'result:\n%s' % error)
             return output.decode('utf-8')
-        except Exception, e:
+        except Exception as e:
             raise ValueError("Failed to run CoffeeScript compiler for this "
                 "file. Please confirm that the \"coffee\" application is "
                 "on your path and that you can run it from your own command "

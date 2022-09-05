@@ -4,7 +4,7 @@ from mediagenerator.generators.bundles.base import Filter
 
 class YUICompressor(Filter):
     def __init__(self, **kwargs):
-        super(YUICompressor, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         assert self.filetype in ('css', 'js'), (
             'YUICompressor only supports compilation to css and js. '
             'The parent filter expects "%s".' % self.filetype)
@@ -23,7 +23,7 @@ class YUICompressor(Filter):
                 output, error = cmd.communicate(smart_str(input))
                 assert cmd.wait() == 0, 'Command returned bad result:\n%s' % error
                 yield output.decode('utf-8')
-            except Exception, e:
+            except Exception as e:
                 raise ValueError("Failed to execute Java VM or yuicompressor. "
                     "Please make sure that you have installed Java "
                     "and that it's in your PATH and that you've configured "

@@ -14,7 +14,7 @@ class I18N(Filter):
     takes_input = False
 
     def __init__(self, **kwargs):
-        super(I18N, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         assert self.filetype == 'js', (
             'I18N only supports compilation to js. '
             'The parent filter expects "%s".' % self.filetype)
