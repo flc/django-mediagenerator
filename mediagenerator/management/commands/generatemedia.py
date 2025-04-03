@@ -1,4 +1,3 @@
-from lib2to3.pytree import Base
 from ...api import generate_media
 from django.core.management.base import BaseCommand
 
