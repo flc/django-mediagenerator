@@ -2,8 +2,8 @@ from django.conf import settings
 from django.utils.encoding import smart_str
 from mediagenerator.generators.bundles.base import Filter
 
-COMPILATION_LEVEL = getattr(settings, 'CLOSURE_COMPILATION_LEVEL',
-                            'SIMPLE_OPTIMIZATIONS')
+COMPILATION_LEVEL = getattr(settings, 'CLOSURE_COMPILATION_LEVEL', 'SIMPLE_OPTIMIZATIONS')
+OTHER_OPTIONS = getattr(settings, 'CLOSURE_OTHER_OPTIONS', [])
 
 class Closure(Filter):
     def __init__(self, **kwargs):
@@ -20,9 +20,14 @@ class Closure(Filter):
         for input in self.get_input(variation):
             try:
                 compressor = settings.CLOSURE_COMPILER_PATH
-                cmd = Popen(['java', '-jar', compressor,
-                             '--charset', 'utf-8',
-                             '--compilation_level', self.compilation_level],
+                cmd_parts = [
+                    'java', '-jar', compressor,
+                    '--charset', 'utf-8',
+                    '--compilation_level', self.compilation_level
+                ]
+                if OTHER_OPTIONS:
+                    cmd_parts.extend(OTHER_OPTIONS)
+                cmd = Popen(cmd_parts,
                             stdin=PIPE, stdout=PIPE, stderr=PIPE,
                             universal_newlines=True)
                 output, error = cmd.communicate(smart_str(input))
